@@ -1,0 +1,26 @@
+{
+  "data": {
+    "teamList": {
+      "items": [
+        {
+          "_path": "/content/dam/my-graphql-project/en/team-alpha",
+          "title": "Team Alpha",
+          "shortName": "team-alpha",
+          "description": {
+            "plaintext": "This is the description of Team Alpha!"
+          },
+          "teamMembers": [
+            {
+              "fullName": "Alison Smith",
+              "occupation": ["Photographer"]
+            },
+            {
+              "fullName": "John Doe",
+              "occupation": ["Artist", "Influencer"]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

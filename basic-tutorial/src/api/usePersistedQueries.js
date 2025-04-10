@@ -22,21 +22,43 @@ import { useEffect, useState } from "react";
  */
 
 /**
- *  
+ *
  */
 
 /**
  * Private, shared function that invokes the AEM Headless client.
- * 
+ *
  * @param {String} persistedQueryName the fully qualified name of the persisted query
  * @param {*} queryParameters an optional JavaScript object containing query parameters
- * @returns the GraphQL data or an error message 
+ * @returns the GraphQL data or an error message
  */
 async function fetchPersistedQuery(persistedQueryName, queryParameters) {
   //*********************************
-  // TODO :: Implement this by following the steps from AEM Headless Tutorial ==> Implement to run AEM GraphQL persisted queries
+  // Implemented by following the steps from AEM Headless Tutorial ==> Implement to run AEM GraphQL persisted queries
   // https://experienceleague.adobe.com/docs/experience-manager-learn/getting-started-with-aem-headless/graphql/multi-step/graphql-and-react-app.html#implement-to-run-aem-graphql-persisted-queries
   //*********************************
+  let data;
+  let err;
+
+  try {
+    // AEM GraphQL queries are asynchronous, either await their return or use Promise-based syntax
+    const response = await aemHeadlessClient.runPersistedQuery(
+      persistedQueryName,
+      queryParameters
+    );
+    // The GraphQL data is stored on the response's data field
+    data = response?.data;
+  } catch (e) {
+    // An error occurred, return the error messages
+    err = e
+      .toJSON()
+      ?.map((error) => error.message)
+      ?.join(", ");
+    console.error(e.toJSON());
+  }
+
+  // Return the GraphQL and any errors
+  return { data, err };
 }
 
 /**
@@ -45,11 +67,29 @@ async function fetchPersistedQuery(persistedQueryName, queryParameters) {
  * @returns an array of Team JSON objects, and array of errors
  */
 export function useAllTeams() {
-
   //*********************************
   // TODO :: Implement this by following the steps from AEM Headless Tutorial ==> Implement Teams functionality
   // https://experienceleague.adobe.com/docs/experience-manager-learn/getting-started-with-aem-headless/graphql/multi-step/graphql-and-react-app.html#implement-teams-functionality
   //*********************************
+  const [teams, setTeams] = useState(null);
+  const [error, setError] = useState(null);
+
+  // Use React useEffect to manage state changes
+  useEffect(() => {
+    async function fetchData() {
+      // Call the AEM GraphQL persisted query named "my-project/all-teams"
+      const { data, err } = await fetchPersistedQuery("my-project/all-teams");
+      // Sets the teams variable to the list of team JSON objects
+      setTeams(data?.teamList?.items);
+      // Set any errors
+      setError(err);
+    }
+    // Call the internal fetchData() as per React best practices
+    fetchData();
+  }, []);
+
+  // Returns the teams and errors
+  return { teams, error };
 }
 
 /**
@@ -59,10 +99,8 @@ export function useAllTeams() {
  * @returns a JSON object representing the person
  */
 export function usePersonByName(fullName) {
-
   //*********************************
   // TODO :: Implement this by following the steps from AEM Headless Tutorial ==> Implement Person functionality
   // https://experienceleague.adobe.com/docs/experience-manager-learn/getting-started-with-aem-headless/graphql/multi-step/graphql-and-react-app.html#implement-person-functionality
   //*********************************
-
 }
