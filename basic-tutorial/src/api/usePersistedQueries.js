@@ -100,7 +100,36 @@ export function useAllTeams() {
  */
 export function usePersonByName(fullName) {
   //*********************************
-  // TODO :: Implement this by following the steps from AEM Headless Tutorial ==> Implement Person functionality
+  // Implemented this by following the steps from AEM Headless Tutorial ==> Implement Person functionality
   // https://experienceleague.adobe.com/docs/experience-manager-learn/getting-started-with-aem-headless/graphql/multi-step/graphql-and-react-app.html#implement-person-functionality
   //*********************************
+  const [person, setPerson] = useState(null);
+  const [errors, setErrors] = useState(null);
+
+  useEffect(() => {
+    async function fetchData() {
+      // The key is the variable name as defined in the persisted query, and may not match the model's field name
+      const queryParameters = { name: fullName };
+
+      // Invoke the persisted query, and pass in the queryParameters object as the 2nd parameter
+      const { data, err } = await fetchPersistedQuery(
+        "my-project/person-by-name",
+        queryParameters
+      );
+
+      if (err) {
+        // Capture errors from the HTTP request
+        setErrors(err);
+      } else if (data?.personList?.items?.length === 1) {
+        // Set the person data after data validation
+        setPerson(data.personList.items[0]);
+      } else {
+        // Set an error if no person could be found
+        setErrors(`Cannot find person with name: ${fullName}`);
+      }
+    }
+    fetchData();
+  }, [fullName]);
+
+  return { person, errors };
 }

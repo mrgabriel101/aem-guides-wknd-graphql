@@ -1,0 +1,23 @@
+{
+  "data": {
+    "personList": {
+      "items": [
+        {
+          "_path": "/content/dam/my-graphql-project/en/john-doe",
+          "fullName": "John Doe",
+          "occupation": ["Artist", "Influencer"],
+          "biographyText": {
+            "json": null
+          },
+          "profilePicture": {
+            "_path": "/content/dam/my-graphql-project/John-Doe.png",
+            "_authorUrl": "http://localhost:4502/content/dam/my-graphql-project/John-Doe.png",
+            "_publishUrl": "http://localhost:4503/content/dam/my-graphql-project/John-Doe.png",
+            "width": 225,
+            "height": 225
+          }
+        }
+      ]
+    }
+  }
+}
